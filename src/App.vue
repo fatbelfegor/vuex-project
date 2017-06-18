@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
+    <header>
+      <search></search>
+    </header>
+    <main>
+      <results></results>
+    </main>
     <router-view></router-view>
   </div>
 </template>
