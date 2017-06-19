@@ -1,53 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>vuex-project</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-var watchExampleVM = new Vue({
-  el: '#watch-example',
-  data: {
-    question: '',
-    answer: 'Пока вы не зададите вопрос, я не могу ответить!'
-  },
-  watch: {
-    // эта функция запускается при любом изменении вопроса
-    question: function (newQuestion) {
-      this.answer = 'Ожидаю, когда вы закончите печатать...'
-      this.getAnswer()
-    }
-  },
-  methods: {
-    // _.debounce — это функция из lodash, позволяющая ограничить
-    // то, насколько часто может выполняться определённая операция.
-    // В данном случае, мы хотим ограничить частоту обращений к yesno.wtf/api,
-    // дожидаясь завершения печати вопроса перед тем как послать ajax-запрос.
-    // Чтобы узнать больше о функции _.debounce (и её родственнице _.throttle),
-    // см. документацию: https://lodash.com/docs#debounce
-    getAnswer: _.debounce(
-      function () {
-        if (this.question.indexOf('?') === -1) {
-          this.answer = 'Вопросы обычно заканчиваются вопросительным знаком. ;-)'
-          return
-        }
-        this.answer = 'Думаю...'
-        var vm = this
-        axios.get('https://yesno.wtf/api')
-          .then(function (response) {
-            vm.answer = _.capitalize(response.data.answer)
-          })
-          .catch(function (error) {
-            vm.answer = 'Ошибка! Не могу связаться с API. ' + error
-          })
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue tuts</title>
+  <link rel="stylesheet" href="style5.css">
+  <script src="vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="demo" :style="{backgroundColor: color}"></div>
+    <div class="demo" :style="myStyle"></div>
+    <div class="demo" :style="[myStyle, {height: width + 'px'}]"></div>
+    <hr>
+    <input type="text" v-model="color">
+    <input type="text" v-model="width">
+  </div>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        color: 'gray',
+        width: 100
       },
-      // Это число миллисекунд, которое мы ждём, после того как пользователь прекратил печатать:
-      500
-    )
-  }
-})
-</script>
-  </body>
+      computed: {
+        myStyle: function() {
+          return {
+            backgroundColor: this.color,
+            width: this.width + 'px'
+          };
+        }
+      }
+    })
+  </script>
+</body>
 </html>
